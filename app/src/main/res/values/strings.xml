@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">WeatherMVP</string>
+    <string name="powered_by_darksky">Powered By\n Dark Sky</string>
+    <string name="google_base_url">https://maps.googleapis.com/maps/api/geocode/</string>
+    <string name="darksky_base_url">https://api.darksky.net/forecast/</string>
+    <string name="google_api_key">AIzaSyDJPBfg8tgmDSRF-Sl6gdT3KDfs4gL_uhg</string>
+    <string name="darksky_api_key">017f3ac0086e46d4ee9d8ea494cd4670</string>
+</resources>

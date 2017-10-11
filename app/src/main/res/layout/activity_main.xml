@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".mainview.MainActivity"
+    android:background="@android:color/white"
+    >
+
+    <EditText
+        android:fontFamily="sans-serif-light"
+        android:textColor="@android:color/black"
+        android:id="@+id/zipcode"
+        android:textAlignment="center"
+        android:hint="Enter Location"
+        android:textColorHint="@android:color/black"
+        android:textSize="40sp"
+        android:layout_centerInParent="true"
+        android:layout_marginRight="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        />
+
+    <Button
+        android:fontFamily="sans-serif-light"
+        android:id="@+id/button_search"
+        android:textColor="@android:color/black"
+        android:text="Search"
+        android:textSize="18sp"
+        android:background="@android:color/transparent"
+        android:layout_margin="10dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        />
+
+    <FrameLayout
+        android:elevation="5dp"
+        android:id="@+id/fragment_holder"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
+
+    </FrameLayout>
+
+
+
+</RelativeLayout>
+

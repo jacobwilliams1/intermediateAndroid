@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/black"
+    android:id="@+id/layout_background"
+    android:clickable="true">
+
+    <TextView
+        android:fontFamily="sans-serif-light"
+        android:id="@+id/weather_for"
+        android:text="Weather for"
+        android:textColor="@android:color/white"
+        android:textSize="36sp"
+        android:layout_marginTop="20dp"
+        android:layout_centerHorizontal="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        />
+
+    <TextView
+        android:gravity="center_horizontal"
+        android:id="@+id/area"
+        android:fontFamily="sans-serif-light"
+        android:text="Some place"
+        android:textColor="@android:color/white"
+        android:textSize="36sp"
+        android:layout_marginTop="15dp"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/weather_for"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        />
+
+    <ImageView
+        android:tint="@android:color/white"
+        android:id="@+id/weather_icon"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_centerInParent="true"
+        />
+
+    <TextView
+        android:id="@+id/summary"
+        android:text="Summary"
+        android:textColor="@android:color/white"
+        android:textSize="24sp"
+        android:fontFamily="sans-serif-light"
+        android:layout_marginTop="10dp"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/weather_icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        />
+
+    <TextView
+        android:fontFamily="sans-serif-light"
+        android:text="90"
+        android:textColor="@android:color/white"
+        android:textSize="24sp"
+        android:id="@+id/temp_hi"
+        android:layout_margin="15dp"
+        android:layout_alignParentBottom="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        />
+
+    <TextView
+        android:id="@+id/temp_lo"
+        android:textSize="16sp"
+        android:text="/ 50"
+        android:fontFamily="sans-serif-light"
+        android:textColor="@android:color/white"
+        android:layout_marginBottom="17dp"
+        android:layout_toRightOf="@id/temp_hi"
+        android:layout_alignParentBottom="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        />
+
+    <TextView
+        android:text="50%"
+        android:id="@+id/precipitation_chance"
+        android:textSize="24sp"
+        android:fontFamily="sans-serif-light"
+        android:textColor="@android:color/white"
+        android:layout_margin="15dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:maxLength="5"
+        />
+
+    <TextView
+        android:text="precip"
+        android:id="@+id/precip"
+        android:textSize="16sp"
+        android:fontFamily="sans-serif-light"
+        android:textColor="@android:color/white"
+        android:layout_marginBottom="17dp"
+        android:layout_toLeftOf="@id/precipitation_chance"
+        android:layout_alignParentBottom="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        />
+
+    <TextView
+        android:id="@+id/temperature_current"
+        android:text="48"
+        android:fontFamily="sans-serif-light"
+        android:textColor="@android:color/white"
+        android:textSize="48sp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:layout_below="@id/summary"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        />
+
+    <TextView
+        android:id="@+id/dark_sky"
+        android:gravity="center_horizontal"
+        android:text="@string/powered_by_darksky"
+        android:textColor="@android:color/white"
+        android:layout_margin="15dp"
+        android:textSize="10sp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        />
+
+</RelativeLayout>
