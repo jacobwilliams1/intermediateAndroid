@@ -13,8 +13,4 @@ public interface MainView {
     void removeWeatherFragment();
 
     void closeApp();
-//
-//    double getLat();
-//
-//    double getLong();
 }

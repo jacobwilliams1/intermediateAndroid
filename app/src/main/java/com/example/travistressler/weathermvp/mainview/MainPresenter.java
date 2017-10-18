@@ -1,6 +1,10 @@
 package com.example.travistressler.weathermvp.mainview;
 
+import android.Manifest;
+import android.content.pm.PackageManager;
+import android.location.LocationManager;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
 import android.widget.Toast;
 
 import com.example.travistressler.weathermvp.R;
@@ -27,8 +31,11 @@ public class MainPresenter {
     private Retrofit googleRetrofit;
     private Retrofit darkSkyRetrofit;
     private Bundle bundle;
+    private LocationManager locationManager;
     public static String WEATHER = "weather";
     public static String PLACE = "place";
+    private double longitude;
+    private double latitude;
 
     public MainPresenter() {
         bundle = new Bundle();
@@ -43,7 +50,7 @@ public class MainPresenter {
 
     public void attachView(MainView view) {
         this.view = view;
-        if(view != null) {
+        if (view != null) {
             buildApi();
         }
     }
@@ -55,21 +62,17 @@ public class MainPresenter {
 
     public void searchClicked(String address) {
         getWeather(address);
-//        view.getLat();
-//        view.getLong();
+
     }
-
-
 
     public void getWeather(String address) {
         googleGeoApi.getAddress(address, googleApiKey).enqueue(new Callback<GoogleAddress>() {
             @Override
             public void onResponse(Call<GoogleAddress> call, Response<GoogleAddress> response) {
-                if(response.isSuccessful()) {
+                if (response.isSuccessful()) {
                     try {
                         bundle.putString(PLACE, response.body().getResults().get(0).getAddressName());
-                        darkSkyApi.getWeather(darkSkyApiKey, response.body().getResults().get(0).getGeometry().getLocation().getLatitude(),
-                                response.body().getResults().get(0).getGeometry().getLocation().getLongitude()).enqueue(new Callback<Weather>() {
+                        darkSkyApi.getWeather(darkSkyApiKey, latitude, longitude).enqueue(new Callback<Weather>() {
                             @Override
                             public void onResponse(Call<Weather> call, Response<Weather> response) {
                                 if (response.isSuccessful()) {
@@ -84,7 +87,7 @@ public class MainPresenter {
 
                             }
                         });
-                    }catch (Exception e) {
+                    } catch (Exception e) {
                         view.toastError("Please enter a valid location!");
                     }
                 }
@@ -98,24 +101,29 @@ public class MainPresenter {
     }
 
     public Retrofit getGoogleRetrofit() {
-        if(googleRetrofit == null) {
+        if (googleRetrofit == null) {
             googleRetrofit = new Retrofit.Builder().baseUrl(googleBaseUrl).addConverterFactory(GsonConverterFactory.create()).build();
         }
         return googleRetrofit;
     }
 
     public Retrofit getDarkSkyRetrofit() {
-        if(darkSkyRetrofit == null) {
+        if (darkSkyRetrofit == null) {
             darkSkyRetrofit = new Retrofit.Builder().baseUrl(darkSkyBaseUrl).addConverterFactory(GsonConverterFactory.create()).build();
         }
         return darkSkyRetrofit;
     }
 
     public void backPressed(boolean weatherFragmentIsVisible) {
-        if(weatherFragmentIsVisible) {
+        if (weatherFragmentIsVisible) {
             view.removeWeatherFragment();
         } else {
             view.closeApp();
         }
+    }
+
+    public void getLocation(double longitude, double latitude) {
+        this.longitude = longitude;
+        this.latitude = latitude;
     }
 }

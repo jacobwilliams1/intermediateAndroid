@@ -1,8 +1,12 @@
 package com.example.travistressler.weathermvp.mainview;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.pm.PackageManager;
+import android.location.Criteria;
 import android.location.Location;
+import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -10,6 +14,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.travistressler.weathermvp.R;
@@ -20,11 +25,13 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 
-public class MainActivity extends AppCompatActivity implements MainView {
+public class MainActivity extends AppCompatActivity implements MainView, LocationListener {
 
     private MainPresenter presenter;
     private WeatherFragment weatherFragment;
     private static final int REQUEST_LOCATION = 1;
+    private LocationManager locationManager;
+    private String mprovider;
 
     @BindView(R.id.zipcode)
     EditText zipCode;
@@ -45,6 +52,24 @@ public class MainActivity extends AppCompatActivity implements MainView {
         weatherFragment = WeatherFragment.newInstance();
         presenter = new MainPresenter();
         presenter.attachView(this);
+
+        locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        Criteria criteria = new Criteria();
+
+        mprovider = locationManager.getBestProvider(criteria, false);
+
+        if (mprovider != null && !mprovider.equals("")) {
+            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                return;
+            }
+            Location location = locationManager.getLastKnownLocation(mprovider);
+            locationManager.requestLocationUpdates(mprovider, 15000, 1, this);
+
+            if (location != null) {
+                presenter.getLocation(location.getLongitude(), location.getLatitude());
+
+            }
+        }
 
     }
 
@@ -74,27 +99,33 @@ public class MainActivity extends AppCompatActivity implements MainView {
         super.onBackPressed();
     }
 
-//    @Override
-//    public double getLat() {
-////        LocationManager lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-////
-////        @SuppressLint("MissingPermission") Location location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-////        double latitude = location.getLatitude();
-////        return latitude;
-//    }
 
-//    @Override
-//    public double getLong() {
-////        LocationManager lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-////        @SuppressLint("MissingPermission") Location location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-////        double longitude = location.getLongitude();
-////        return longitude;
-//    }
+    @Override
+    public void onLocationChanged(Location location) {
+        TextView longitude = findViewById(R.id.textView);
+        TextView latitude = findViewById(R.id.textView1);
+        longitude.setText("Current Longitude:" + location.getLongitude());
+        latitude.setText("Current Latitude:" + location.getLatitude());
+    }
 
+    @Override
+    public void onStatusChanged(String s, int i, Bundle bundle) {
 
+    }
+
+    @Override
+    public void onProviderEnabled(String s) {
+
+    }
+
+    @Override
+    public void onProviderDisabled(String s) {
+
+    }
     @Override
     public void onBackPressed() {
         presenter.backPressed(weatherFragment.isVisible());
     }
 
 }
+
