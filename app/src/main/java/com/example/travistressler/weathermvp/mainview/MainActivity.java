@@ -1,10 +1,11 @@
 package com.example.travistressler.weathermvp.mainview;
 
 import android.Manifest;
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.location.Address;
 import android.location.Criteria;
+import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -13,14 +14,14 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.travistressler.weathermvp.R;
 import com.example.travistressler.weathermvp.weatherview.WeatherFragment;
 
-import butterknife.BindView;
+import java.io.IOException;
+import java.util.List;
+import java.util.Locale;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
@@ -32,14 +33,11 @@ public class MainActivity extends AppCompatActivity implements MainView, Locatio
     private static final int REQUEST_LOCATION = 1;
     private LocationManager locationManager;
     private String mprovider;
-
-    @BindView(R.id.zipcode)
-    EditText zipCode;
+    private String mLocation;
 
     @OnClick(R.id.button_search)
     public void searchClicked(View view) {
-        presenter.searchClicked(zipCode.getText().toString());
-        zipCode.setText("");
+        presenter.getWeather();
     }
 
 
@@ -65,10 +63,17 @@ public class MainActivity extends AppCompatActivity implements MainView, Locatio
             Location location = locationManager.getLastKnownLocation(mprovider);
             locationManager.requestLocationUpdates(mprovider, 15000, 1, this);
 
-            if (location != null) {
-                presenter.getLocation(location.getLongitude(), location.getLatitude());
-
+            Geocoder geocoder = new Geocoder(getApplicationContext(), Locale.getDefault());
+            List<Address> listAddresses = null;
+            try {
+                listAddresses = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
+            } catch (IOException e) {
+                e.printStackTrace();
             }
+            if(null!=listAddresses&&listAddresses.size()>0){
+                 mLocation = listAddresses.get(0).getAddressLine(0);
+            }
+                presenter.getLocation(location.getLongitude(), location.getLatitude(), mLocation);
         }
 
     }
@@ -102,10 +107,7 @@ public class MainActivity extends AppCompatActivity implements MainView, Locatio
 
     @Override
     public void onLocationChanged(Location location) {
-        TextView longitude = findViewById(R.id.textView);
-        TextView latitude = findViewById(R.id.textView1);
-        longitude.setText("Current Longitude:" + location.getLongitude());
-        latitude.setText("Current Latitude:" + location.getLatitude());
+
     }
 
     @Override
